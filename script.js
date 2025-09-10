@@ -7,6 +7,7 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const header = document.querySelector('header');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -29,3 +30,16 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+// Insert cookie message
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+message.innerHTML = 'We use cookied for improved functionality. <button class="btn btn--close-cokie">Got it!</button>';
+
+setTimeout(() => {
+  header.prepend(message);
+  const cookieButton = document.getElementsByClassName('btn--close-cokie');
+  cookieButton[0].addEventListener('click', function () {
+    message.remove();
+  })
+}, 2000);
