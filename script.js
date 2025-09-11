@@ -4,13 +4,14 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const header = document.querySelector('header');
+const header = document.querySelector('.header');
+const nav = document.querySelector('.nav');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
-const nav = document.querySelector('.nav');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -26,10 +27,8 @@ const closeModal = function () {
 };
 
 btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
-
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
-
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
     closeModal();
@@ -42,7 +41,7 @@ message.classList.add('cookie-message');
 message.innerHTML =
   'We use cookied for improved functionality. <button class="btn btn--close-cokie">Got it!</button>';
 message.style.backgroundColor = '#37383d';
-message.style.width = '105%';
+message.style.width = '108%';
 
 setTimeout(() => {
   header.prepend(message);
@@ -54,8 +53,9 @@ setTimeout(() => {
   });
 }, 1000);
 
+// Scrolling
 btnScrollTo.addEventListener('click', function (e) {
-  const s1Coords = section1.getBoundingClientRect();
+  // const s1Coords = section1.getBoundingClientRect();
   // window.scrollTo(s1Coords.left + window.pageXOffse, s1Coords.y + window.pageYOffset); //current position + the current scroll
   // window.scrollTo({
   //   left: s1Coords.left + window.pageXOffse,
@@ -117,8 +117,37 @@ const handleHover = function (e) {
     });
     logo.style.opacity = this;
   }
-}
+};
 // Passing "argument" into handler
 nav.addEventListener('mouseover', handleHover.bind(0.5));
-
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+// Sticky navbar
+const navHeight = nav.getBoundingClientRect().height;
+const stickyNav = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`, // a height that will be applied outside of target element (observer object wont change, visual will)
+});
+headerObserver.observe(header);
+// INTERSCTIONOBSERER
+// this callback will be called each time our target element(section1) is intercecting the root element at the threshold we define
+// const obsCallback = function (entries, observer) {
+//   // entries is an array of threshold entries
+//   entries.forEach(entrie => {
+//     console.log(entrie);
+//   });
+// };
+// const obsOptions = {
+//   root: null, // so the root element is actually the viewport
+//   threshold: [0, 0.2], // how much the element we defined(section1) iσ intersepting the root property we defined(viewport).
+//                        // In other words when the callback function (obsCallback) will be called.
+// };
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
