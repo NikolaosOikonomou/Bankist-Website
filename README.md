@@ -4,3 +4,4 @@ Its main purpose is to practice working with the DOM and handling events.
 Concepts applied in this application:
 DOM tree, DOM structure/methods, DOM traversing
 Event propagation, Event Delegation
+Intersection observer API

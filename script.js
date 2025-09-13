@@ -126,7 +126,7 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 const navHeight = nav.getBoundingClientRect().height;
 const stickyNav = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
+  // console.log(entry);
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
 };
@@ -136,6 +136,26 @@ const headerObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`, // a height that will be applied outside of target element (observer object wont change, visual will)
 });
 headerObserver.observe(header);
+
+// Reveal sections
+const allSection = document.querySelectorAll('.section');
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSection.forEach(section => {
+  section.classList.add('section--hidden');
+  sectionObserver.observe(section);
+});
+
 // INTERSCTIONOBSERER
 // this callback will be called each time our target element(section1) is intercecting the root element at the threshold we define
 // const obsCallback = function (entries, observer) {
