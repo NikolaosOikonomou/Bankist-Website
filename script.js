@@ -217,6 +217,19 @@ const previousSlide = function () {
   goToSlide(curSlide);
 }
 btnLeft.addEventListener('click', previousSlide);
+
+document.addEventListener('keydown', function (e) {
+  if (e.code === 'ArrowRight') {
+    if (curSlide === maxSlides - 1) curSlide = 0;
+    else curSlide++;
+    goToSlide(curSlide);
+  }
+  if (e.code === 'ArrowLeft') {
+    if (curSlide === 0) curSlide = maxSlides - 1;
+    else curSlide--;
+    goToSlide(curSlide);
+  }
+});
 // INTERSCTIONOBSERER
 // this callback will be called each time our target element(section1) is intercecting the root element at the threshold we define
 // const obsCallback = function (entries, observer) {
