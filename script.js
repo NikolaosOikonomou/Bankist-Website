@@ -161,7 +161,7 @@ allSection.forEach(section => {
 
 // Lazy loading image
 const imgTargets = document.querySelectorAll('img[data-src]');
-imgTargets.forEach(e => console.log(e.dataset))
+
 const loadImg = function (entries, observer) {
   const [entry] = entries;
   if (!entry.isIntersecting) return;
@@ -184,6 +184,39 @@ const imgObserver = new IntersectionObserver(loadImg, {
 
 imgTargets.forEach(el => imgObserver.observe(el));
 
+// SLIDES
+let curSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+const maxSlides = slides.length;
+
+
+const goToSlide = function (slide) {
+  slides.forEach((s, i) => s.style.transform = `translateX(${100 * (i - slide)}%)`);
+}
+goToSlide(0);
+// Next slide
+const nextSlide = function () {
+  if (curSlide === maxSlides - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+  goToSlide(curSlide);
+}
+btnRight.addEventListener('click', nextSlide);
+
+// Previous slide
+const previousSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlides - 1;
+  } else {
+    curSlide--;
+  }
+  goToSlide(curSlide);
+}
+btnLeft.addEventListener('click', previousSlide);
 // INTERSCTIONOBSERER
 // this callback will be called each time our target element(section1) is intercecting the root element at the threshold we define
 // const obsCallback = function (entries, observer) {
