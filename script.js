@@ -140,10 +140,12 @@ headerObserver.observe(header);
 // Reveal sections
 const allSection = document.querySelectorAll('.section');
 const revealSection = function (entries, observer) {
-  const [entry] = entries;
-  if (!entry.isIntersecting) return;
-  entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.target);
+  entries.forEach(entry => {
+
+    if (!entry.isIntersecting) return;
+    entry.target.classList.remove('section--hidden');
+    observer.unobserve(entry.target);
+  });
 };
 
 const sectionObserver = new IntersectionObserver(revealSection, {
@@ -155,6 +157,32 @@ allSection.forEach(section => {
   section.classList.add('section--hidden');
   sectionObserver.observe(section);
 });
+
+
+// Lazy loading image
+const imgTargets = document.querySelectorAll('img[data-src]');
+imgTargets.forEach(e => console.log(e.dataset))
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function () {
+
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+}
+
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,         // Viewport reference
+  threshold: 0,       // Visibility threshold
+  rootMargin: '200px' // Margin around the root
+});
+
+imgTargets.forEach(el => imgObserver.observe(el));
 
 // INTERSCTIONOBSERER
 // this callback will be called each time our target element(section1) is intercecting the root element at the threshold we define
